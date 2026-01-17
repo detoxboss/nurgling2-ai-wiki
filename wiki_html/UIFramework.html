@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>UIFramework</title>
+  <style>
+    html {
+      line-height: 1.5;
+      font-family: Georgia, serif;
+      font-size: 20px;
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 1em;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, 'Lucida Console', Consolas, monospace;
+      font-size: 85%;
+      margin: 0;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      background-color: #1a1a1a;
+      border: none;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">UIFramework</h1>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#ui-framework">UI Framework</a>
+<ul>
+<li><a href="#widget-tree-fundamentals">Widget tree
+fundamentals</a></li>
+<li><a href="#global-ui-extension-nurgling.nui">Global UI extension:
+<code>nurgling.NUI</code></a></li>
+<li><a href="#in-game-ui-extension-nurgling.ngameui">In-game UI
+extension: <code>nurgling.NGameUI</code></a></li>
+<li><a
+href="#draggable-panels-nurgling.widgets.ndraggablewidget">Draggable
+panels: <code>nurgling.widgets.NDraggableWidget</code></a></li>
+<li><a href="#key-inputs-and-bindings">Key inputs and bindings</a></li>
+</ul></li>
+</ul>
+</nav>
+<h1 id="ui-framework">UI Framework</h1>
+<h2 id="widget-tree-fundamentals">Widget tree fundamentals</h2>
+<p>Haven’s UI is a tree of <code>haven.Widget</code> instances rooted at
+<code>ui.root</code>. Each widget:</p>
+<ul>
+<li>has coordinates (<code>c</code>) and size (<code>sz</code>)</li>
+<li>can receive draw calls (<code>draw(GOut g)</code>)</li>
+<li>receives input events (<code>mousedown</code>, <code>mouseup</code>,
+<code>mousemove</code>, <code>keydown</code>, …)</li>
+<li>communicates with the server via
+<code>wdgmsg(String msg, Object... args)</code></li>
+<li>receives server-originating events via
+<code>uimsg(String msg, Object... args)</code></li>
+</ul>
+<p>Nurgling follows the same model and implements features mostly
+by:</p>
+<ul>
+<li>subclassing widgets (<code>NMapView</code>, <code>NInventory</code>,
+<code>NFlowerMenu</code>, etc.)</li>
+<li>wrapping widgets in draggable containers
+(<code>NDraggableWidget</code>)</li>
+<li>hooking widget messages (<code>NGItem.wdgmsg</code>,
+<code>NWItem.mousedown</code>, etc.)</li>
+</ul>
+<h2 id="global-ui-extension-nurgling.nui">Global UI extension:
+<code>nurgling.NUI</code></h2>
+<p><code>NUI</code> extends <code>haven.UI</code> and is instantiated in
+<code>haven.GLPanel.newui(...)</code>.</p>
+<p>Key responsibilities:</p>
+<ul>
+<li>Adds <code>NCore</code> to the root widget and binds it.</li>
+<li>Tracks session info (<code>NSessInfo</code>) and persists
+verification/subscription flags.</li>
+<li>Implements an inspect mode driven by modifier keys (Shift /
+config-dependent).</li>
+<li>Provides adjustable UI opacity and window background mode.</li>
+</ul>
+<h2 id="in-game-ui-extension-nurgling.ngameui">In-game UI extension:
+<code>nurgling.NGameUI</code></h2>
+<p><code>NGameUI</code> is constructed via the <code>gameui</code>
+<code>@RName</code> factory. It is the central place to:</p>
+<ul>
+<li>access primary widgets (map, main inventory, equipment, menus)</li>
+<li>create/attach Nurgling widgets that need to exist once per
+session</li>
+<li>expose helper methods like
+<code>getWindow(String caption)</code></li>
+</ul>
+<p>Important patterns in <code>NGameUI</code>:</p>
+<ul>
+<li>“heavy widgets” are initialized in <code>attached()</code> to avoid
+repeated init during construction/reconnect.</li>
+<li>UI composition commonly uses
+<strong><code>NDraggableWidget</code></strong> for panels that can be
+repositioned.</li>
+</ul>
+<h2 id="draggable-panels-nurgling.widgets.ndraggablewidget">Draggable
+panels: <code>nurgling.widgets.NDraggableWidget</code></h2>
+<p>Nurgling implements a standardized draggable container:</p>
+<ul>
+<li>Drawn and interactive only when
+<code>ui.core.mode == NCore.Mode.DRAG</code>.</li>
+<li>Stores position/locked/visibility/flip state in
+<code>NDragProp</code> keyed by panel name.</li>
+<li>Optionally supports flipping content layout.</li>
+</ul>
+<p>If you add a new persistent UI panel, wrapping it in
+<code>NDraggableWidget</code> is usually the correct pattern.</p>
+<h2 id="key-inputs-and-bindings">Key inputs and bindings</h2>
+<p>Nurgling uses two mechanisms:</p>
+<ul>
+<li>Java AWT key events (<code>KeyEvent</code>) in
+<code>NUI.keydown(...)</code>.</li>
+<li>Haven’s <code>KeyBinding</code>/<code>KeyMatch</code> in widgets
+like <code>NMapView</code>.</li>
+</ul>
+<p>When adding new hotkeys, prefer
+<code>KeyBinding.get("id", KeyMatch...)</code> where possible to
+integrate with the client’s keybinding system.</p>
+</body>
+</html>

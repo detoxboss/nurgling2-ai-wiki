@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>index</title>
+  <style>
+    html {
+      line-height: 1.5;
+      font-family: Georgia, serif;
+      font-size: 20px;
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 1em;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, 'Lucida Console', Consolas, monospace;
+      font-size: 85%;
+      margin: 0;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      background-color: #1a1a1a;
+      border: none;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">index</h1>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#nurgling2-nurgling-client-developer-wiki">Nurgling2
+(Nurgling client) – Developer Wiki</a>
+<ul>
+<li><a href="#repository-layout-high-level">Repository layout (high
+level)</a></li>
+<li><a
+href="#the-most-important-design-pattern-factory-overrides-in-haven">The
+most important design pattern: <strong>factory overrides in
+<code>haven</code></strong></a></li>
+<li><a href="#where-to-start-reading-recommended">Where to start reading
+(recommended)</a></li>
+<li><a href="#documentation-map">Documentation map</a></li>
+</ul></li>
+</ul>
+</nav>
+<h1 id="nurgling2-nurgling-client-developer-wiki">Nurgling2 (Nurgling
+client) – Developer Wiki</h1>
+<p>This documentation set is intended to give you an engineering-level
+mental model of <strong>how the Nurgling2 custom Haven &amp; Hearth
+client is organized</strong>, how it extends the upstream
+<strong><code>haven</code></strong> codebase, and where to add or modify
+features—especially UI controls that trigger automation.</p>
+<blockquote>
+<p>Scope note: this is a source-oriented “system map”. It is not a user
+manual. For user-facing feature docs that ship with the project, see
+<strong><a href="user_docs/welcome.html">User docs</a></strong>.</p>
+</blockquote>
+<h2 id="repository-layout-high-level">Repository layout (high
+level)</h2>
+<ul>
+<li><p><code>src/haven/...</code><br />
+Upstream (or upstream-derived) Haven client code. In this project,
+several factories in <code>haven</code> are deliberately modified to
+instantiate Nurgling extensions.</p></li>
+<li><p><code>src/nurgling/...</code><br />
+The Nurgling feature layer: UI overlays, custom widgets/windows,
+automation actions/bots, area/route systems, configuration, services,
+and DB integration.</p></li>
+<li><p><code>src/nurgling/actions/...</code><br />
+Action framework (automation entrypoints). Most bots implement
+<code>nurgling.actions.Action</code>.</p></li>
+<li><p><code>src/nurgling/tasks/...</code><br />
+“UI-thread polling” tasks that bots/actions enqueue into
+<code>NCore</code>.</p></li>
+</ul>
+<h2
+id="the-most-important-design-pattern-factory-overrides-in-haven">The
+most important design pattern: <strong>factory overrides in
+<code>haven</code></strong></h2>
+<p>The Haven client uses the <code>@RName("...")</code> registry to
+build widgets based on messages from the server. Nurgling modifies
+<strong>the <code>haven</code> factories</strong> so that core widgets
+are constructed as Nurgling subclasses.</p>
+<p>Key overrides you will encounter immediately:</p>
+<ul>
+<li><code>gameui</code> → <code>nurgling.NGameUI</code> (primary in-game
+UI)</li>
+<li><code>mapview</code> → <code>nurgling.NMapView</code> (world view
+and interaction)</li>
+<li><code>inv</code> → <code>nurgling.NInventory</code> (inventory
+widget)</li>
+<li><code>item</code> → <code>nurgling.NGItem</code> (item
+data/model)</li>
+<li><code>sm</code> → <code>nurgling.NFlowerMenu</code> (flower
+menu)</li>
+</ul>
+<p>Full <code>@RName</code> mapping table extracted from the
+codebase:</p>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>RName</th>
+<th>Factory creates</th>
+<th>Defined in</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>acnt</code></td>
+<td><code>AlignPanel</code></td>
+<td><code>haven/Widget.java</code></td>
+</tr>
+<tr class="even">
+<td><code>av</code></td>
+<td><code>| `haven/Avaview.java` | | `battr` | `BAttrWnd` | `haven/BAttrWnd.java` | | `btn` | `Button` | `haven/Button.java` | | `buddy` | `NBuddyWnd` | `haven/BuddyWnd.java` | | `buff` | `Buff` | `haven/Buff.java` | | `ccnt` |</code></td>
+<td><code>haven/Widget.java</code></td>
+</tr>
+<tr class="odd">
+<td><code>charlist</code></td>
+<td><code>NCharlist</code></td>
+<td><code>haven/Charlist.java</code></td>
+</tr>
+<tr class="even">
+<td><code>chat</code></td>
+<td><code>Chatwindow</code></td>
+<td><code>haven/Chatwindow.java</code></td>
+</tr>
+<tr class="odd">
+<td><code>chk</code></td>
+<td><code>| `haven/CheckBox.java` | | `chr` | `CharWnd` | `haven/CharWnd.java` | | `cnt` | `Widget` | `haven/Widget.java` | | `credo` | `TabProxy` | `haven/SkillWnd.java` | | `dynres` | `DynresWindow` | `haven/DynresWindow.java` | | `epry` | `NEquipory` | `haven/Equipory.java` | | `expls` | `TabProxy` | `haven/SkillWnd.java` | | `fcnt` |</code></td>
+<td><code>haven/Widget.java</code></td>
+</tr>
+<tr class="even">
+<td><code>fmg</code></td>
+<td><code>FightWnd</code></td>
+<td><code>haven/FightWnd.java</code></td>
+</tr>
+<tr class="odd">
+<td><code>frv</code></td>
+<td><code>Fightview</code></td>
+<td><code>haven/Fightview.java</code></td>
+</tr>
+<tr class="even">
+<td><code>fsess</code></td>
+<td><code>NFightsess</code></td>
+<td><code>haven/Fightsess.java</code></td>
+</tr>
+<tr class="odd">
+<td><code>gameui</code></td>
+<td><code>NGameUI</code></td>
+<td><code>haven/GameUI.java</code></td>
+</tr>
+<tr class="even">
+<td><code>give</code></td>
+<td><code>GiveButton</code></td>
+<td><code>haven/GiveButton.java</code></td>
+</tr>
+<tr class="odd">
+<td><code>grp</code></td>
+<td><code>GroupSelector</code></td>
+<td><code>haven/BuddyWnd.java</code></td>
+</tr>
+<tr class="even">
+<td><code>hr</code></td>
+<td><code>HRuler</code></td>
+<td><code>haven/HRuler.java</code></td>
+</tr>
+<tr class="odd">
+<td><code>ibtn</code></td>
+<td><code>IButton</code></td>
+<td><code>haven/IButton.java</code></td>
+</tr>
+<tr class="even">
+<td><code>ichk</code></td>
+<td><code>| `haven/ICheckBox.java` | | `im` |</code></td>
+<td><code>haven/IMeter.java</code></td>
+</tr>
+<tr class="odd">
+<td><code>img</code></td>
+<td><code>| `haven/Img.java` | | `inv` | `NInventory` | `haven/Inventory.java` | | `isbox` | `NISBox` | `haven/ISBox.java` | | `item` | `NGItem` | `haven/GItem.java` | | `lbl` | `Label` | `haven/Label.java` | | `linpack` |</code></td>
+<td><code>haven/PackCont.java</code></td>
+</tr>
+<tr class="even">
+<td><code>log</code></td>
+<td><code>Textlog</code></td>
+<td><code>haven/Textlog.java</code></td>
+</tr>
+<tr class="odd">
+<td><code>ltbtn</code></td>
+<td><code>| `haven/Button.java` | | `make` | `NMakewindow` | `haven/Makewindow.java` | | `mapview` | `NMapView` | `haven/MapView.java` | | `mchat` |</code></td>
+<td><code>haven/ChatUI.java</code></td>
+</tr>
+<tr class="even">
+<td><code>pchat</code></td>
+<td><code>| `haven/ChatUI.java` | | `pmchat` |</code></td>
+<td><code>haven/ChatUI.java</code></td>
+</tr>
+<tr class="odd">
+<td><code>prog</code></td>
+<td><code>| `haven/Progress.java` | | `pv` | `Partyview` | `haven/Partyview.java` | | `quest` | `DefaultBox` | `haven/QuestWnd.java` | | `quests` | `QuestWnd` | `haven/QuestWnd.java` | | `sattr` | `SAttrWnd` | `haven/SAttrWnd.java` | | `schan` |</code></td>
+<td><code>haven/ChatUI.java</code></td>
+</tr>
+<tr class="even">
+<td><code>scm</code></td>
+<td><code>MenuGrid</code></td>
+<td><code>haven/MenuGrid.java</code></td>
+</tr>
+<tr class="odd">
+<td><code>scr</code></td>
+<td><code>Scrollport</code></td>
+<td><code>haven/Scrollport.java</code></td>
+</tr>
+<tr class="even">
+<td><code>sess</code></td>
+<td><code>SessWidget</code></td>
+<td><code>haven/SessWidget.java</code></td>
+</tr>
+<tr class="odd">
+<td><code>skill</code></td>
+<td><code>TabProxy</code></td>
+<td><code>haven/SkillWnd.java</code></td>
+</tr>
+<tr class="even">
+<td><code>sm</code></td>
+<td><code>NFlowerMenu</code></td>
+<td><code>haven/FlowerMenu.java</code></td>
+</tr>
+<tr class="odd">
+<td><code>speedget</code></td>
+<td><code>Speedget</code></td>
+<td><code>haven/Speedget.java</code></td>
+</tr>
+<tr class="even">
+<td><code>text</code></td>
+<td><code>TextEntry</code></td>
+<td><code>haven/TextEntry.java</code></td>
+</tr>
+<tr class="odd">
+<td><code>vm</code></td>
+<td><code>VMeter</code></td>
+<td><code>haven/VMeter.java</code></td>
+</tr>
+<tr class="even">
+<td><code>wnd</code></td>
+<td><code>Window</code></td>
+<td><code>haven/Window.java</code></td>
+</tr>
+<tr class="odd">
+<td><code>wound</code></td>
+<td><code>WoundBox</code></td>
+<td><code>haven/WoundWnd.java</code></td>
+</tr>
+<tr class="even">
+<td><code>wounds</code></td>
+<td><code>WoundWnd</code></td>
+<td><code>haven/WoundWnd.java</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="where-to-start-reading-recommended">Where to start reading
+(recommended)</h2>
+<p>If you only read five files first, read these:</p>
+<ol type="1">
+<li><code>haven/GLPanel.java</code> – creates <code>NUI</code> (the
+global UI instance) and swaps UIs on reconnect.</li>
+<li><code>nurgling/NUI.java</code> – extends <code>UI</code>; adds
+<code>NCore</code>, session info, inspect mode, and various global UI
+behaviors.</li>
+<li><code>haven/GameUI.java</code> (factory + base constructor) +
+<code>nurgling/NGameUI.java</code> – the core in-game UI.</li>
+<li><code>haven/MapView.java</code> +
+<code>nurgling/NMapView.java</code> – world rendering, click handling,
+overlays, selection modes.</li>
+<li><code>nurgling/NCore.java</code> – automation “kernel”: tasks,
+periodic services, DB lifecycle, mapv4 client.</li>
+</ol>
+<h2 id="documentation-map">Documentation map</h2>
+<ul>
+<li><a href="Architecture.html">Architecture</a></li>
+<li><a href="UIFramework.html">UI framework</a></li>
+<li><a href="WidgetProtocol.html">Widgets and server protocol</a></li>
+<li><a href="WindowsMenus.html">Windows, menus, and draggable
+panels</a></li>
+<li><a href="Inventory.html">Inventory and item model</a></li>
+<li><a href="WorldInteraction.html">World interaction</a></li>
+<li><a href="Automation.html">Automation framework</a></li>
+<li><a href="AddingUI.html">How to add UI for automation</a></li>
+<li><a href="BotRegistry.html">How to add a bot to the Bots Menu</a></li>
+</ul>
+</body>
+</html>

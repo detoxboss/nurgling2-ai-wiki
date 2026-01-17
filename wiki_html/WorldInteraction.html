@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>WorldInteraction</title>
+  <style>
+    html {
+      line-height: 1.5;
+      font-family: Georgia, serif;
+      font-size: 20px;
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 1em;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, 'Lucida Console', Consolas, monospace;
+      font-size: 85%;
+      margin: 0;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      background-color: #1a1a1a;
+      border: none;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">WorldInteraction</h1>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#world-interaction">World interaction</a>
+<ul>
+<li><a href="#core-types">Core types</a></li>
+<li><a href="#sending-world-actions">Sending world actions</a></li>
+<li><a href="#selection-modes-in-nmapview">Selection modes in
+<code>NMapView</code></a></li>
+<li><a href="#navigation-integrations">Navigation integrations</a></li>
+<li><a href="#overlays">Overlays</a></li>
+</ul></li>
+</ul>
+</nav>
+<h1 id="world-interaction">World interaction</h1>
+<h2 id="core-types">Core types</h2>
+<ul>
+<li><code>nurgling.NMapView</code> extends
+<code>haven.MapView</code>.</li>
+<li>World objects are <code>haven.Gob</code> instances in
+<code>ui.sess.glob.oc</code>.</li>
+</ul>
+<p>NMapView is where Nurgling concentrates:</p>
+<ul>
+<li>selection modes (areas, gobs, measurement)</li>
+<li>overlays (tile/gob highlights)</li>
+<li>routing and navigation helpers</li>
+<li>click destination “path line” drawing</li>
+</ul>
+<h2 id="sending-world-actions">Sending world actions</h2>
+<p>Nurgling standardizes most world action messages in
+<code>nurgling.NUtils</code>.</p>
+<p>Common operations:</p>
+<ul>
+<li><strong>Left-click gob</strong>:
+<code>NUtils.clickGob(gob)</code></li>
+<li><strong>Right-click gob</strong>:
+<code>NUtils.rclickGob(gob)</code></li>
+<li><strong>Activate with held item</strong>:
+<code>NUtils.activateItem(gob, shift)</code></li>
+<li><strong>Open/activate gob</strong>:
+<code>NUtils.activateGob(gob)</code></li>
+</ul>
+<p>Under the hood these send <code>map.wdgmsg("click"...)</code> and
+<code>map.wdgmsg("itemact"...)</code> payloads.</p>
+<p>If you are implementing automation, prefer these helpers so your code
+stays consistent with existing client conventions.</p>
+<h2 id="selection-modes-in-nmapview">Selection modes in
+<code>NMapView</code></h2>
+<p>NMapView tracks a number of interactive modes:</p>
+<ul>
+<li><code>isAreaSelectionMode</code> – selecting ground rectangles</li>
+<li><code>isGobSelectionMode</code> – selecting gobs</li>
+<li><code>isChatAreaSharingMode</code> – Alt+Ctrl+LMB sharing</li>
+<li><code>zoneMeasureMode</code> / <code>zoneClearMode</code> –
+measurement tool</li>
+</ul>
+<p>It also tracks:</p>
+<ul>
+<li><code>selectedGob</code></li>
+<li>current selection coords while dragging</li>
+</ul>
+<p>When adding a new tool mode, follow the existing pattern:</p>
+<ul>
+<li>add an atomic boolean flag</li>
+<li>capture input in <code>mousedown/mousemove/mouseup</code></li>
+<li>render overlays in <code>draw()</code> or via a
+<code>Gob.Overlay</code></li>
+</ul>
+<h2 id="navigation-integrations">Navigation integrations</h2>
+<p>NMapView owns a <strong>non-singleton</strong>
+<code>ChunkNavManager</code>:</p>
+<ul>
+<li><code>initializeWithGenus(genus)</code> should be called once the
+profile/genus is known.</li>
+<li>the manager is accessed via <code>getChunkNavManager()</code>.</li>
+</ul>
+<p>The chunk navigation system is Nurgling’s higher-level
+pathfinding/navigation layer used by several automation bots.</p>
+<h2 id="overlays">Overlays</h2>
+<p>NMapView initializes certain overlays on first draw:</p>
+<ul>
+<li>rock tile highlighting</li>
+</ul>
+<p>It also uses dummy gobs and overlays for area labels and route
+markers.</p>
+<p>If you are adding an overlay, try to:</p>
+<ul>
+<li>keep the rendering side effects inside the render/tick thread</li>
+<li>avoid per-frame allocations where possible (NMapView includes
+caching patterns)</li>
+</ul>
+</body>
+</html>

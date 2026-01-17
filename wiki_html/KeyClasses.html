@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>KeyClasses</title>
+  <style>
+    html {
+      line-height: 1.5;
+      font-family: Georgia, serif;
+      font-size: 20px;
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 1em;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, 'Lucida Console', Consolas, monospace;
+      font-size: 85%;
+      margin: 0;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      background-color: #1a1a1a;
+      border: none;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">KeyClasses</h1>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#key-classes-by-responsibility">Key classes by
+responsibility</a>
+<ul>
+<li><a href="#core-runtime">Core runtime</a></li>
+<li><a href="#in-game-ui">In-game UI</a></li>
+<li><a href="#world-map">World / map</a></li>
+<li><a href="#inventory-items">Inventory / items</a></li>
+<li><a href="#automation">Automation</a></li>
+</ul></li>
+</ul>
+</nav>
+<h1 id="key-classes-by-responsibility">Key classes by
+responsibility</h1>
+<p>This page is a fast index of “where does X live?”</p>
+<h2 id="core-runtime">Core runtime</h2>
+<ul>
+<li><code>haven.GLPanel</code> – render loop; instantiates
+<code>nurgling.NUI</code></li>
+<li><code>nurgling.NUI</code> – global UI behaviors and session
+info</li>
+<li><code>nurgling.NCore</code> – automation kernel; task scheduling; DB
+lifecycle</li>
+</ul>
+<h2 id="in-game-ui">In-game UI</h2>
+<ul>
+<li><code>nurgling.NGameUI</code> – main in-game UI; heavy widget init;
+window find helpers</li>
+<li><code>nurgling.widgets.NDraggableWidget</code> – persistent
+draggable panels</li>
+<li><code>nurgling.widgets.NBotsMenu</code> – bots launcher UI</li>
+<li><code>nurgling.widgets.NMenuGridWdg</code> – menugrid wrapper +
+toggle buff tracking</li>
+</ul>
+<h2 id="world-map">World / map</h2>
+<ul>
+<li><code>nurgling.NMapView</code> – world view; overlays; selection
+modes; navigation manager</li>
+<li><code>nurgling.navigation.*</code> – chunk navigation and pathing
+abstractions</li>
+<li><code>nurgling.areas.*</code> – area definitions, labels, and area
+persistence</li>
+</ul>
+<h2 id="inventory-items">Inventory / items</h2>
+<ul>
+<li><code>nurgling.NInventory</code> – extended inventory UI; query
+helpers</li>
+<li><code>nurgling.NGItem</code> – item model; tooltip parsing; cached
+quality/content</li>
+<li><code>nurgling.NWItem</code> – item widget; search, auto-drop,
+modifier gestures</li>
+</ul>
+<h2 id="automation">Automation</h2>
+<ul>
+<li><code>nurgling.actions.Action</code> – bot interface</li>
+<li><code>nurgling.actions.bots.registry.BotRegistry</code> – menu bot
+registration</li>
+<li><code>nurgling.tasks.*</code> – blocking wait helpers for bots</li>
+</ul>
+</body>
+</html>

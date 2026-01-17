@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Inventory</title>
+  <style>
+    html {
+      line-height: 1.5;
+      font-family: Georgia, serif;
+      font-size: 20px;
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 1em;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, 'Lucida Console', Consolas, monospace;
+      font-size: 85%;
+      margin: 0;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      background-color: #1a1a1a;
+      border: none;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Inventory</h1>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#inventory-and-item-model">Inventory and item model</a>
+<ul>
+<li><a href="#core-types">Core types</a></li>
+<li><a href="#nurgling.ngitem-model"><code>nurgling.NGItem</code>
+(model)</a></li>
+<li><a href="#nurgling.nwitem-view"><code>nurgling.NWItem</code>
+(view)</a></li>
+<li><a
+href="#nurgling.ninventory-container"><code>nurgling.NInventory</code>
+(container)</a>
+<ul>
+<li><a href="#task-based-queries">Task-based queries</a></li>
+</ul></li>
+<li><a href="#practical-extension-points">Practical extension points</a>
+<ul>
+<li><a href="#add-a-new-inventory-gesture">Add a new inventory
+gesture</a></li>
+<li><a href="#add-an-inventory-window-control">Add an inventory window
+control</a></li>
+<li><a href="#add-new-item-derived-data">Add new item-derived
+data</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+<h1 id="inventory-and-item-model">Inventory and item model</h1>
+<h2 id="core-types">Core types</h2>
+<p>In Haven’s UI model, inventory is a composition of three key
+layers:</p>
+<ul>
+<li><code>GItem</code> – the item “model” (resource, tooltip state,
+server hooks)</li>
+<li><code>WItem</code> – the item “view” (a widget that draws a
+<code>GItem</code> in a slot)</li>
+<li><code>Inventory</code> – the container widget that positions
+<code>WItem</code> instances on a slot grid</li>
+</ul>
+<p>Nurgling overrides all three:</p>
+<ul>
+<li><code>haven.GItem</code> factory creates
+<code>nurgling.NGItem</code></li>
+<li><code>WItem</code> subclass <code>nurgling.NWItem</code></li>
+<li><code>haven.Inventory</code> factory creates
+<code>nurgling.NInventory</code></li>
+</ul>
+<h2 id="nurgling.ngitem-model"><code>nurgling.NGItem</code> (model)</h2>
+<p>Nurgling adds:</p>
+<ul>
+<li>cached <code>name</code> for item display name</li>
+<li>parsed <code>quality</code> (via tooltip rawinfo parsing)</li>
+<li>parsed armor values (hard/soft)</li>
+<li>parsed “contents” list (<code>ui/tt/cont</code>) with quality per
+contained item</li>
+<li><code>meterUpdated</code> timestamp tracking on
+<code>uimsg("tt")</code>/<code>uimsg("meter")</code></li>
+</ul>
+<p>It also intercepts:</p>
+<ul>
+<li><code>wdgmsg("take")</code> and <code>wdgmsg("iact")</code> to
+record candidate items for UI/automation.</li>
+</ul>
+<h2 id="nurgling.nwitem-view"><code>nurgling.NWItem</code> (view)</h2>
+<p>Key additions:</p>
+<ul>
+<li>Optimized overlay updates: only refresh overlay textures when
+<code>tick()</code> indicates changes.</li>
+<li>Inventory search highlighting: sets
+<code>((NGItem)item).isSearched</code> based on text and
+<code>NSearchable</code> infos.</li>
+<li>Auto-dropper integration: if enabled and item is marked searched,
+drop items automatically from main inventory.</li>
+</ul>
+<p>Modifier click extensions:</p>
+<ul>
+<li>Alt+Shift+Click: <code>"transfer-same"</code> for same items sorted
+by quality (mouse button selects ascending/descending)</li>
+<li>Alt+Ctrl+Click: <code>"drop-same"</code> for same items sorted by
+quality</li>
+</ul>
+<h2 id="nurgling.ninventory-container"><code>nurgling.NInventory</code>
+(container)</h2>
+<p>NInventory adds:</p>
+<ul>
+<li><p>optional slot numbering overlay (pre-rendered textures for
+performance)</p></li>
+<li><p>extra UI elements for search and right-side panels
+(expanded/compact)</p></li>
+<li><p>many <strong>automation-friendly query helpers</strong> that
+block on tasks:</p>
+<ul>
+<li><code>getFreeSpace()</code>, <code>getTotalSpace()</code>,
+<code>getItem(...)</code>, <code>getItems(...)</code>,
+<code>getWItems(...)</code>, etc.</li>
+</ul></li>
+</ul>
+<h3 id="task-based-queries">Task-based queries</h3>
+<p>Most query helpers use the same pattern:</p>
+<ol type="1">
+<li>construct a task (e.g., <code>new GetItems(this, alias)</code>)</li>
+<li>schedule it: <code>NUtils.getUI().core.addTask(task)</code></li>
+<li>read the task’s result</li>
+</ol>
+<p>This makes the call safe from a bot thread while still reading
+UI-thread state.</p>
+<h2 id="practical-extension-points">Practical extension points</h2>
+<h3 id="add-a-new-inventory-gesture">Add a new inventory gesture</h3>
+<ul>
+<li>Implement/extend in <code>NWItem.mousedown(...)</code> (gesture
+detection)</li>
+<li>Handle the new message in <code>NInventory.wdgmsg(...)</code>
+(container behavior)</li>
+</ul>
+<h3 id="add-an-inventory-window-control">Add an inventory window
+control</h3>
+<p>Follow the titlebar injection pattern (see <a
+href="WindowsMenus.html">Windows and menus</a>) so you do not need to fork
+the upstream <code>Window</code> implementation.</p>
+<h3 id="add-new-item-derived-data">Add new item-derived data</h3>
+<ul>
+<li>If it is tooltip-derived, parse <code>rawinfo</code> in
+<code>NGItem.updateraw()</code>.</li>
+<li>If it requires per-tick logic, add in
+<code>NGItem.tick()</code>.</li>
+</ul>
+<p>Be careful with thread safety: <code>tick()</code> runs on the UI
+thread.</p>
+</body>
+</html>

@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Automation</title>
+  <style>
+    html {
+      line-height: 1.5;
+      font-family: Georgia, serif;
+      font-size: 20px;
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 1em;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, 'Lucida Console', Consolas, monospace;
+      font-size: 85%;
+      margin: 0;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      background-color: #1a1a1a;
+      border: none;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Automation</h1>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#automation-framework">Automation framework</a>
+<ul>
+<li><a href="#two-layer-model">Two-layer model</a></li>
+<li><a href="#nurgling.ncore"><code>nurgling.NCore</code></a>
+<ul>
+<li><a href="#task-scheduling-contract">Task scheduling
+contract</a></li>
+</ul></li>
+<li><a href="#action-interface"><code>Action</code> interface</a></li>
+<li><a href="#scenarios">Scenarios</a></li>
+<li><a href="#safety-and-robustness-patterns">Safety and robustness
+patterns</a></li>
+<li><a href="#recommended-extension-patterns">Recommended extension
+patterns</a></li>
+</ul></li>
+</ul>
+</nav>
+<h1 id="automation-framework">Automation framework</h1>
+<h2 id="two-layer-model">Two-layer model</h2>
+<p>Nurgling automation generally operates in two layers:</p>
+<ol type="1">
+<li><strong>Actions/Bots</strong> (high-level intent)
+<ul>
+<li>implement <code>nurgling.actions.Action</code></li>
+<li>run in their own thread (frequently created by UI button
+clicks)</li>
+</ul></li>
+<li><strong>Tasks</strong> (UI-thread polling / waiting)
+<ul>
+<li>extend <code>nurgling.tasks.NTask</code></li>
+<li>scheduled into <code>NCore</code> via
+<code>NUI.core.addTask(task)</code></li>
+<li><code>addTask(...)</code> blocks the caller thread until the task
+completes</li>
+</ul></li>
+</ol>
+<h2 id="nurgling.ncore"><code>nurgling.NCore</code></h2>
+<p>NCore is attached to <code>ui.root</code> and ticked every frame.</p>
+<p>Core responsibilities relevant to automation:</p>
+<ul>
+<li>owns a concurrent task queue</li>
+<li>each tick, calls <code>task.check()</code>; if <code>true</code>,
+notifies and removes the task</li>
+<li>manages auto-actions like AutoDrink and AutoSaveTableware
+(threaded)</li>
+<li>controls bot mode flags</li>
+<li>manages DB lifecycle and related sync services</li>
+</ul>
+<h3 id="task-scheduling-contract">Task scheduling contract</h3>
+<p><code>addTask(task)</code> behavior (simplified):</p>
+<ul>
+<li>if <code>task.check()</code> is already true, returns
+immediately</li>
+<li>otherwise, enqueue task, then <code>wait()</code> on the task
+object</li>
+<li>when UI tick loop later sees <code>task.check() == true</code>, it
+calls <code>notify()</code> on the task</li>
+</ul>
+<p>This means:</p>
+<ul>
+<li>tasks must be written to be safe to call repeatedly from the UI
+tick</li>
+<li>tasks should generally be short and side-effect free unless
+explicitly intended</li>
+</ul>
+<h2 id="action-interface"><code>Action</code> interface</h2>
+<p><code>nurgling.actions.Action</code> is intentionally minimal:</p>
+<ul>
+<li><code>Results run(NGameUI gui) throws InterruptedException</code></li>
+</ul>
+<p>Most bots/actions do:</p>
+<ul>
+<li>query/locate UI state (inventory, windows, gobs)</li>
+<li>send actions to server via <code>wdgmsg</code> wrappers
+(<code>NUtils.*</code>)</li>
+<li>block on tasks while waiting for state transitions</li>
+</ul>
+<h2 id="scenarios">Scenarios</h2>
+<p>There is an additional orchestration layer in:</p>
+<ul>
+<li><code>nurgling.scenarios.*</code></li>
+<li><code>nurgling.actions.bots.ScenarioRunner</code></li>
+</ul>
+<p>Scenarios allow chaining multiple bot steps with settings.</p>
+<h2 id="safety-and-robustness-patterns">Safety and robustness
+patterns</h2>
+<p>When adding new automation:</p>
+<ul>
+<li>use stable lookup methods (area IDs, window captions, resource
+names)</li>
+<li>always handle <code>InterruptedException</code></li>
+<li>avoid long UI thread work; do heavy loops in bot thread and do small
+UI-state checks via tasks</li>
+</ul>
+<h2 id="recommended-extension-patterns">Recommended extension
+patterns</h2>
+<ul>
+<li>New “unit of behavior”: implement <code>Action</code></li>
+<li>New UI polling primitive: implement <code>NTask</code></li>
+<li>New menu button: register in <code>BotRegistry</code> and provide
+icon assets</li>
+</ul>
+</body>
+</html>

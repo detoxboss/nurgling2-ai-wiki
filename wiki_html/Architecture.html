@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Architecture</title>
+  <style>
+    html {
+      line-height: 1.5;
+      font-family: Georgia, serif;
+      font-size: 20px;
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 1em;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, 'Lucida Console', Consolas, monospace;
+      font-size: 85%;
+      margin: 0;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      background-color: #1a1a1a;
+      border: none;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Architecture</h1>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#architecture">Architecture</a>
+<ul>
+<li><a href="#top-level-runtime-graph">Top-level runtime graph</a></li>
+<li><a href="#startup-sequence-conceptual">Startup sequence
+(conceptual)</a></li>
+<li><a href="#data-and-gameplay-subsystems">Data and gameplay
+subsystems</a>
+<ul>
+<li><a href="#world-model">World model</a></li>
+<li><a href="#inventory-items">Inventory / items</a></li>
+<li><a href="#automation">Automation</a></li>
+<li><a href="#configuration-profiles">Configuration / profiles</a></li>
+<li><a href="#database-backed-services">Database-backed
+services</a></li>
+</ul></li>
+<li><a href="#threading-model-practical">Threading model
+(practical)</a></li>
+</ul></li>
+</ul>
+</nav>
+<h1 id="architecture">Architecture</h1>
+<h2 id="top-level-runtime-graph">Top-level runtime graph</h2>
+<p>At runtime, the client has a few “spines” that everything else hangs
+off:</p>
+<ol type="1">
+<li><strong>Rendering / UI loop</strong>: <code>haven.GLPanel</code>
+owns the render loop and creates the global UI instance.</li>
+<li><strong>UI root &amp; widget tree</strong>: <code>haven.UI</code>
+(here: <code>nurgling.NUI</code>) owns the widget tree
+(<code>ui.root</code>) and dispatches input/events.</li>
+<li><strong>In-game UI</strong>: the server constructs a widget named
+<code>gameui</code>, which Nurgling maps to
+<code>nurgling.NGameUI</code>.</li>
+<li><strong>World view</strong>: inside GameUI the <code>mapview</code>
+widget is created; Nurgling maps it to
+<code>nurgling.NMapView</code>.</li>
+<li><strong>Automation core</strong>: <code>nurgling.NCore</code> is a
+widget bound into <code>ui.root</code> and provides a task queue,
+periodic services, and DB lifecycle.</li>
+</ol>
+<h2 id="startup-sequence-conceptual">Startup sequence (conceptual)</h2>
+<ol type="1">
+<li><code>haven.GLPanel.newui(...)</code> instantiates
+<code>nurgling.NUI</code>.</li>
+<li><code>NUI</code> constructor attaches <code>NCore</code> to
+<code>ui.root</code> and binds it.</li>
+<li>Server sends widget creation messages. When it creates
+<code>gameui</code>, the <code>haven.GameUI.$_</code> factory returns
+<code>new nurgling.NGameUI(...)</code>.</li>
+<li>GameUI builds standard sub-widgets (chat, menus, portrait, buff
+list, etc.). Nurgling adds many draggable containers
+(<code>NDraggableWidget</code>).</li>
+<li>During <code>GameUI.attached()</code>, heavy widgets are created
+once (<code>areas</code>, <code>cookbook</code>,
+<code>encyclopedia</code>, <code>blueprint</code>). Nurgling overrides
+<code>NGameUI.attached()</code> as well to apply profile-aware data and
+settings.</li>
+</ol>
+<h2 id="data-and-gameplay-subsystems">Data and gameplay subsystems</h2>
+<h3 id="world-model">World model</h3>
+<ul>
+<li><code>haven.Glob</code> – world state container.</li>
+<li><code>haven.OCache</code> – object cache for <code>Gob</code>
+instances.</li>
+<li><code>haven.Gob</code> – world object.</li>
+<li><code>haven.MCache</code> – map tile cache.</li>
+</ul>
+<p>Nurgling extends world interaction primarily in
+<code>nurgling.NMapView</code> via:</p>
+<ul>
+<li>overlay toggles (<code>toggleol(...)</code>)</li>
+<li>selection modes (area/gob selection, measure tool)</li>
+<li>route and portal visuals</li>
+<li>chunk navigation manager integration</li>
+</ul>
+<h3 id="inventory-items">Inventory / items</h3>
+<ul>
+<li><code>haven.Inventory</code> →
+<strong><code>nurgling.NInventory</code></strong></li>
+<li><code>haven.GItem</code> →
+<strong><code>nurgling.NGItem</code></strong></li>
+<li><code>haven.WItem</code> →
+<strong><code>nurgling.NWItem</code></strong></li>
+</ul>
+<p>Nurgling adds:</p>
+<ul>
+<li>slot numbering overlay</li>
+<li>search/filtering integration</li>
+<li>additional item interaction verbs (<code>transfer-same</code>,
+<code>drop-same</code>)</li>
+<li>quality parsing and content parsing from tooltip payload</li>
+</ul>
+<h3 id="automation">Automation</h3>
+<ul>
+<li><code>nurgling.actions.Action</code> – interface for a unit of
+automation with <code>Results run(NGameUI gui)</code>.</li>
+<li><code>nurgling.actions.bots.*</code> – the bulk of automation
+content.</li>
+<li><code>nurgling.tasks.NTask</code> – polling tasks scheduled into
+<code>NCore</code>.</li>
+<li><code>nurgling.NCore</code> – owns the tasks queue and checks tasks
+on every tick.</li>
+</ul>
+<h3 id="configuration-profiles">Configuration / profiles</h3>
+<ul>
+<li><code>nurgling.NConfig</code> – global and per-profile keys.</li>
+<li><code>nurgling.profiles.ConfigFactory</code> – resolves a
+profile-aware <code>NConfig</code> instance once the character
+<code>genus</code> is known.</li>
+</ul>
+<h3 id="database-backed-services">Database-backed services</h3>
+<p>When DB is enabled (<code>NConfig.Key.ndbenable</code>),
+<code>NCore</code> instantiates <code>nurgling.db.DatabaseManager</code>
+and starts sync services (areas/routes and other data).</p>
+<h2 id="threading-model-practical">Threading model (practical)</h2>
+<p>The Haven client is not generally thread-safe across all UI/world
+state.</p>
+<ul>
+<li>Most UI and world state should be accessed from the <strong>UI tick
+thread</strong>.</li>
+<li>Many bots are run in their own Java threads (e.g.,
+<code>new Thread(() -&gt; bot.run(gui))</code>).</li>
+<li>To safely “wait for” UI state, bots schedule <code>NTask</code>
+instances via <code>NUI.core.addTask(task)</code>, which blocks the bot
+thread until the task completes.</li>
+</ul>
+<p>This is the critical mental model: <strong>bots do their work by
+repeatedly scheduling tasks that poll state on the UI
+thread</strong>.</p>
+</body>
+</html>

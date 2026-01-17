@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>user_docs/cookbook/cookbook</title>
+  <style>
+    html {
+      line-height: 1.5;
+      font-family: Georgia, serif;
+      font-size: 20px;
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 1em;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, 'Lucida Console', Consolas, monospace;
+      font-size: 85%;
+      margin: 0;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      background-color: #1a1a1a;
+      border: none;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">user_docs/cookbook/cookbook</h1>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#cookbook-usage">Cookbook Usage</a>
+<ul>
+<li><a href="#importing-existing-recipes">Importing Existing Recipes</a>
+<ul>
+<li><a href="#from-cookbook-ui">From Cookbook UI</a></li>
+</ul></li>
+<li><a href="#managing-your-recipe-database">Managing Your Recipe
+Database</a>
+<ul>
+<li><a href="#adding-new-recipes">Adding New Recipes</a></li>
+<li><a href="#searching-recipes">Searching Recipes</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+<h1 id="cookbook-usage">Cookbook Usage</h1>
+<p>Cookbook allows you to import/save/view recipes you’ve previously
+cooked.</p>
+<p><em>Note:</em> Make sure to set up your database first. Read about it
+in <strong>Setting Up SQLite Database</strong> section.</p>
+<h2 id="importing-existing-recipes">Importing Existing Recipes</h2>
+<p>If you have a recipes JSON file exported from the cookbook website
+you can import it into the database:</p>
+<h3 id="from-cookbook-ui">From Cookbook UI</h3>
+<ol type="1">
+<li>Open your Cookbook window</li>
+<li>Click the <strong>“Import”</strong> button in the top toolbar</li>
+<li>Select the JSON file with the recipes</li>
+<li>Wait for the import to complete</li>
+<li>Confirm the import was successful by looking through the
+cookbook.</li>
+</ol>
+<figure>
+<img src="../images/cookbook.png" alt="Cookbook Import Button" />
+<figcaption aria-hidden="true">Cookbook Import Button</figcaption>
+</figure>
+<h2 id="managing-your-recipe-database">Managing Your Recipe
+Database</h2>
+<h3 id="adding-new-recipes">Adding New Recipes</h3>
+<p>With database enabled, new recipes are automatically saved to the
+database when you: - Create a new recipe in the cookbook - Import
+recipes from game data</p>
+<h3 id="searching-recipes">Searching Recipes</h3>
+<p><img src="../images/cookbook_sorting.png"
+alt="Cookbook Import Button" /> <img src="../images/cookbook_arrows.png"
+alt="Cookbook Arrows" /></p>
+<ul>
+<li>Search by recipe name with the search bar. Example query:
+<code>name:fishwrap</code>.</li>
+<li>You can also filter recipes by stat with the stat button shown in
+the image above.</li>
+<li>+I/+II buttons allow you to sort by the amount of stat you get. Also
+shown in the image above.</li>
+<li>At the bottom of the Cookbook page you have two buttons. Left array
+and right arrow that allow you to flip the pages if there are more
+results that can fit on one page.</li>
+</ul>
+</body>
+</html>
